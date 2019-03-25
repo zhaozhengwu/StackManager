@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-repositories {
+/*repositories {
     flatDir {
         dirs 'libs'
     }
@@ -10,7 +10,7 @@ def getMyStoreFile(){
     }else{
         return file("D:/test.jks")
     }
-}
+}*/
 android {
     signingConfigs {
         release {
