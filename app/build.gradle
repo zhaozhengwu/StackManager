@@ -1,9 +1,31 @@
 apply plugin: 'com.android.application'
-
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+def getMyStoreFile(){
+    if("true".equals(IS_JENKINS)){
+        return file("D:/test.jks")
+    }else{
+        return file("D:/test.jks")
+    }
+}
 android {
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword 'muheda'
+            storeFile file('D:/test.jks')
+            storePassword 'muheda'
+        }
+    }
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     compileSdkVersion 27
+    dexOptions {
+        jumboMode true
+    }
     defaultConfig {
         applicationId "com.example.muheda.detest"
         minSdkVersion 21
@@ -11,17 +33,59 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64"
+        }
+        // Enabling multidex support.
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
-            minifyEnabled false
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            //新名字
+            def newName
+            //输出文件夹
+            def outDirectory
+            //是否为Jenkins打包，输出路径不同
+            /*if ("true".equals(IS_JENKINS)) {
+                //BUILD_PATH为服务器输出路径
+                outDirectory = BUILD_PATH
+                newName = "你的app名字" + "-" + defaultConfig.versionName + "-" + BUILD_TYPE + ".apk"
+            } else {
+                outDirectory = outputFileName.getParent()
+                newName = "你的app名字" + "-" + defaultConfig.versionName + "-" + BUILD_TYPE + ".apk"
+            }*/
+            outputFileName= "cep" + "-" + buildType.name + "-" + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk";
+
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
