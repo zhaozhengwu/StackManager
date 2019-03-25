@@ -42,46 +42,11 @@ android {
     }
     buildTypes {
         release {
-            shrinkResources true
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }
-    android.applicationVariants.all { variant ->
-        variant.outputs.all {
-            //新名字
-            def newName
-            //输出文件夹
-            def outDirectory
-            //是否为Jenkins打包，输出路径不同
-            /*if ("true".equals(IS_JENKINS)) {
-                //BUILD_PATH为服务器输出路径
-                outDirectory = BUILD_PATH
-                newName = "你的app名字" + "-" + defaultConfig.versionName + "-" + BUILD_TYPE + ".apk"
-            } else {
-                outDirectory = outputFileName.getParent()
-                newName = "你的app名字" + "-" + defaultConfig.versionName + "-" + BUILD_TYPE + ".apk"
-            }*/
-            outputFileName= "cep" + "-" + buildType.name + "-" + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk";
-
-        }
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-    }
-
-
 }
 
 dependencies {
