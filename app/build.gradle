@@ -20,12 +20,12 @@ android {
             storePassword 'muheda'
         }
     }
-    aaptOptions.cruncherEnabled = false
-    aaptOptions.useNewCruncher = false
+    /*aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false*/
     compileSdkVersion 27
-    dexOptions {
+    /*dexOptions {
         jumboMode true
-    }
+    }*/
     defaultConfig {
         applicationId "com.example.muheda.detest"
         minSdkVersion 21
